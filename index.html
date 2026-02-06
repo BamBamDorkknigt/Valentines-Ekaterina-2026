@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ekaterina, Be My Valentine 💘</title>
+
+  <style>
+    :root{
+      --bg1:#ffe7ef;
+      --bg2:#f7b2c4;
+      --card:#ffffffcc;
+      --text:#1f1f1f;
+      --accent:#ff2d55;
+      --shadow:0 20px 60px rgba(0,0,0,.15);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 800px at 20% 10%, #fff 0%, transparent 55%),
+        linear-gradient(135deg,var(--bg1),var(--bg2));
+      overflow:hidden;
+      color:var(--text);
+    }
+
+    .wrap{
+      width:min(980px,92vw);
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+    }
+
+    @media(max-width:880px){
+      .wrap{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:var(--card);
+      backdrop-filter:blur(10px);
+      border-radius:26px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      position:relative;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(28px,4vw,46px);
+      line-height:1.1;
+    }
+
+    .name{color:var(--accent);font-weight:900}
+
+    p{font-size:16.5px;line-height:1.6}
+
+    .quote{
+      margin:14px 0;
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.7);
+      font-style:italic;
+    }
+
+    .right{
+      display:grid;
+      place-items:center;
+      text-align:center;
+      gap:14px;
+    }
+
+    .heart{
+      width:140px;height:140px;
+      background:var(--accent);
+      transform:rotate(45deg);
+      position:relative;
+      animation:beat 1.15s infinite;
+      border-radius:22px;
+    }
+
+    .heart:before,.heart:after{
+      content:"";
+      position:absolute;
+      width:140px;height:140px;
+      background:var(--accent);
+      border-radius:50%;
+    }
+
+    .heart:before{left:-70px}
+    .heart:after{top:-70px}
+
+    @keyframes beat{
+      0%,100%{transform:rotate(45deg) scale(1)}
+      50%{transform:rotate(45deg) scale(1.06)}
+    }
+
+    .btns{
+      position:relative;
+      width:440px;
+      height:90px;
+    }
+
+    button{
+      position:absolute;
+      top:20px;
+      padding:12px 18px;
+      border-radius:14px;
+      font-size:16px;
+      font-weight:900;
+      border:none;
+      cursor:pointer;
+    }
+
+    .yes{
+      left:20px;
+      background:linear-gradient(135deg,#ff2d55,#ff6a88);
+      color:white;
+    }
+
+    .no{
+      left:220px;
+      background:#fff;
+      pointer-events:none;
+    }
+
+    .result{
+      margin-top:10px;
+      font-weight:900;
+      min-height:40px;
+    }
+
+    .reveal{
+      display:none;
+      margin-top:10px;
+      padding:14px;
+      background:rgba(255,255,255,.7);
+      border-radius:18px;
+      text-align:left;
+    }
+
+    .floating{
+      position:fixed;
+      top:110%;
+      left:var(--x);
+      font-size:var(--s);
+      animation:float var(--d) linear forwards;
+      pointer-events:none;
+    }
+
+    @keyframes float{
+      to{top:-10%;opacity:0}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <section class="card">
+      <h1>
+        Ekaterina…<br>
+        <span class="name">be my Valentine?</span>
+      </h1>
+
+      <p>
+        You make ordinary moments feel special. Quiet walks, silly jokes, big plans…
+        everything feels better when it’s us.
+      </p>
+
+      <div class="quote">
+        “I don’t need a perfect day. I just need you in it.” 💖
+      </div>
+
+      <p>
+        I even built a tiny webpage for this — because asking you normally
+        didn’t feel romantic enough 😄
+      </p>
+
+      <p><b>Love, <span class="name">Evan</span> 💘</b></p>
+    </section>
+
+    <section class="card right">
+      <div class="heart"></div>
+
+      <div class="btns" id="btns">
+        <button class="yes" id="yesBtn">Yes 💖</button>
+        <button class="no" id="noBtn">No 🙈</button>
+      </div>
+
+      <div class="result" id="result">(waiting for your answer…)</div>
+
+      <div class="reveal" id="reveal">
+        <b>Okay, now I’m smiling like an idiot 😄</b>
+        <ul>
+          <li>Your presence feels like peace</li>
+          <li>You make me want to grow for us</li>
+          <li>Even silence with you feels perfect</li>
+        </ul>
+        <div>P.S. You’re my forever Valentine 💘</div>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const result = document.getElementById("result");
+  const reveal = document.getElementById("reveal");
+
+  function moveNo(){
+    const x = Math.random()*260;
+    const y = Math.random()*30;
+    noBtn.style.left = x+"px";
+    noBtn.style.top = y+"px";
+    result.textContent = "That button is shy 🙈";
+    spawnHeart(2);
+  }
+
+  document.addEventListener("mousemove", e=>{
+    const b=noBtn.getBoundingClientRect();
+    const d=Math.hypot(e.clientX-(b.left+b.width/2),e.clientY-(b.top+b.height/2));
+    if(d<120) moveNo();
+  });
+
+  document.addEventListener("touchstart",moveNo,{passive:true});
+
+  yesBtn.onclick=()=>{
+    result.textContent="YAY!! 💖 Happy Valentine’s Day, my love.";
+    reveal.style.display="block";
+    spawnHeart(20);
+  };
+
+  function spawnHeart(n){
+    const icons=["💖","💗","💕","💘","❤️"];
+    for(let i=0;i<n;i++){
+      const h=document.createElement("div");
+      h.className="floating";
+      h.textContent=icons[Math.floor(Math.random()*icons.length)];
+      h.style.setProperty("--x",Math.random()*100+"vw");
+      h.style.setProperty("--s",14+Math.random()*20+"px");
+      h.style.setProperty("--d",3+Math.random()*3+"s");
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),6000);
+    }
+  }
+
+  setInterval(()=>spawnHeart(1),900);
+</script>
+</body>
+</html>
