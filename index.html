@@ -56,48 +56,69 @@
       line-height:1.1;
     }
 
-    .name{color:var(--accent);font-weight:900}
+    .name{
+      color:var(--accent);
+      font-weight:900;
+    }
 
-    p{font-size:16.5px;line-height:1.6}
+    p{
+      font-size:16.5px;
+      line-height:1.6;
+    }
 
     .quote{
       margin:14px 0;
-      padding:14px;
+      padding:14px 18px;
       border-radius:18px;
       background:rgba(255,255,255,.7);
       font-style:italic;
+      transform: rotate(-1.8deg);
+      display:inline-block;
     }
 
     .right{
       display:grid;
       place-items:center;
       text-align:center;
-      gap:14px;
+      gap:16px;
     }
 
+    /* ❤️ FIXED HEART */
     .heart{
-      width:140px;height:140px;
+      width:140px;
+      height:140px;
       background:var(--accent);
-      transform:rotate(45deg);
       position:relative;
-      animation:beat 1.15s infinite;
-      border-radius:22px;
+      transform: rotate(45deg);
+      transform-origin: center;
+      border-radius:20px;
+      animation: beat 1.15s infinite ease-in-out;
+      margin: 0 auto;
     }
 
-    .heart:before,.heart:after{
+    .heart::before,
+    .heart::after{
       content:"";
       position:absolute;
-      width:140px;height:140px;
+      width:140px;
+      height:140px;
       background:var(--accent);
       border-radius:50%;
     }
 
-    .heart:before{left:-70px}
-    .heart:after{top:-70px}
+    .heart::before{
+      left:-70px;
+      top:0;
+    }
+
+    .heart::after{
+      top:-70px;
+      left:0;
+    }
 
     @keyframes beat{
-      0%,100%{transform:rotate(45deg) scale(1)}
-      50%{transform:rotate(45deg) scale(1.06)}
+      0%,100%{transform: rotate(45deg) scale(1);}
+      50%{transform: rotate(45deg) scale(1.06);}
     }
 
     .btns{
@@ -115,6 +136,7 @@
       font-weight:900;
       border:none;
       cursor:pointer;
+      user-select:none;
     }
 
     .yes{
@@ -225,7 +247,10 @@
 
   document.addEventListener("mousemove", e=>{
     const b=noBtn.getBoundingClientRect();
-    const d=Math.hypot(e.clientX-(b.left+b.width/2),e.clientY-(b.top+b.height/2));
+    const d=Math.hypot(
+      e.clientX-(b.left+b.width/2),
+      e.clientY-(b.top+b.height/2)
+    );
     if(d<120) moveNo();
   });
 
