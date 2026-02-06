@@ -109,17 +109,18 @@
       height:90px;
     }
 
-    button{
-      position:absolute;
-      top:20px;
-      padding:12px 18px;
-      border-radius:14px;
-      font-size:16px;
-      font-weight:900;
-      border:none;
-      cursor:pointer;
-      user-select:none;
-    }
+  .btns button{
+  position:absolute;
+  top:20px;
+  padding:12px 18px;
+  border-radius:14px;
+  font-size:16px;
+  font-weight:900;
+  border:none;
+  cursor:pointer;
+  user-select:none;
+}
+
 
     .yes{
       left:20px;
@@ -249,7 +250,7 @@
       <div class="result" id="result">(waiting for your answer…)</div>
 
       <div class="reveal" id="reveal">
-        <b>Okay, now I’m smiling like an idiot 😄</b>
+        <b>Now you have me smiling 😄</b>
         <ul>
           <li>Your presence feels like peace</li>
           <li>You make me want to grow for us</li>
@@ -267,13 +268,32 @@
   const reveal = document.getElementById("reveal");
 
   // rotating “shy button” lines
-  const shyLines = [
-    "That button is shy 🙈",
-    "Nope… it ran away 😄",
-    "Nice try 😇",
-    "It only accepts ‘Yes’ today 💖",
-    "It’s giving ‘too cute to say no’ 💅"
-  ];
+ const shyLines = [
+  "That button is shy 🙈",
+  "Nope… it ran away 😄",
+  "Nice try 😇",
+  "It only accepts ‘Yes’ today 💖",
+  "It’s giving ‘too cute to say no’ 💅",
+
+  "The universe disabled that option 💫",
+  "Hmm… that choice seems unavailable 😌",
+  "That button respects true love only 💞",
+  "Error 404: ‘No’ not found 💻",
+  "It’s pretending not to hear you 🙉",
+
+  "The heart said no to ‘No’ ❤️",
+  "This page was coded with feelings 🥰",
+  "Sorry… destiny intervened ✨",
+  "Even the code ships us 💕",
+  "That button believes in us 😌",
+
+  "Nice attempt, Valentine 😘",
+  "That button is emotionally unavailable 😅",
+  "It only responds to romance 💖",
+  "The answer is already written 💌",
+  "Fate already clicked ‘Yes’ 💫"
+];
+
   let shyIndex = 0;
 
   function cycleShyLine(){
@@ -362,5 +382,6 @@
 </script>
 </body>
 </html>
+
 
 
