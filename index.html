@@ -36,10 +36,7 @@
       grid-template-columns:1.1fr .9fr;
       gap:18px;
     }
-
-    @media(max-width:880px){
-      .wrap{grid-template-columns:1fr}
-    }
+    @media(max-width:880px){ .wrap{grid-template-columns:1fr} }
 
     .card{
       background:var(--card);
@@ -56,23 +53,17 @@
       line-height:1.1;
     }
 
-    .name{
-      color:var(--accent);
-      font-weight:900;
-    }
+    .name{ color:var(--accent); font-weight:900; }
 
-    p{
-      font-size:16.5px;
-      line-height:1.6;
-    }
+    p{ font-size:16.5px; line-height:1.6; }
 
+    /* Quote is now STRAIGHT (no rotation) */
     .quote{
       margin:14px 0;
       padding:14px 18px;
       border-radius:18px;
       background:rgba(255,255,255,.7);
       font-style:italic;
-      transform: rotate(-1.8deg);
       display:inline-block;
     }
 
@@ -83,7 +74,7 @@
       gap:16px;
     }
 
-    /* ❤️ FIXED HEART */
+    /* ❤️ Heart */
     .heart{
       width:140px;
       height:140px;
@@ -95,7 +86,6 @@
       animation: beat 1.15s infinite ease-in-out;
       margin: 0 auto;
     }
-
     .heart::before,
     .heart::after{
       content:"";
@@ -105,16 +95,8 @@
       background:var(--accent);
       border-radius:50%;
     }
-
-    .heart::before{
-      left:-70px;
-      top:0;
-    }
-
-    .heart::after{
-      top:-70px;
-      left:0;
-    }
+    .heart::before{ left:-70px; top:0; }
+    .heart::after{ top:-70px; left:0; }
 
     @keyframes beat{
       0%,100%{transform: rotate(45deg) scale(1);}
@@ -143,8 +125,12 @@
       left:20px;
       background:linear-gradient(135deg,#ff2d55,#ff6a88);
       color:white;
+      box-shadow: 0 10px 22px rgba(255,45,85,.25);
+      transition: transform .12s ease;
     }
+    .yes:hover{ transform: translateY(-2px); }
 
+    /* No is "shy" and can't be clicked */
     .no{
       left:220px;
       background:#fff;
@@ -173,17 +159,38 @@
       font-size:var(--s);
       animation:float var(--d) linear forwards;
       pointer-events:none;
+      opacity:.95;
+      filter: drop-shadow(0 10px 12px rgba(0,0,0,.10));
     }
+    @keyframes float{ to{top:-10%;opacity:0} }
 
-    @keyframes float{
-      to{top:-10%;opacity:0}
+    /* 🎶 Music button */
+    .music-btn{
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 900;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 28px rgba(0,0,0,.12);
     }
+    .music-btn:active{ transform: translateY(1px); }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+  <!-- 🎶 Put a file named song.mp3 in the SAME folder as index.html in your repo -->
+  <audio id="bgm" loop preload="auto">
+    <source src="song.mp3" type="audio/mpeg" />
+  </audio>
+  <button class="music-btn" id="musicBtn">Play music 🎶</button>
 
+  <div class="wrap">
     <section class="card">
       <h1>
         Ekaterina…<br>
@@ -227,7 +234,6 @@
         <div>P.S. You’re my forever Valentine 💘</div>
       </div>
     </section>
-
   </div>
 
 <script>
@@ -236,31 +242,44 @@
   const result = document.getElementById("result");
   const reveal = document.getElementById("reveal");
 
+  // rotating “shy button” lines
+  const shyLines = [
+    "That button is shy 🙈",
+    "Nope… it ran away 😄",
+    "Nice try 😇",
+    "It only accepts ‘Yes’ today 💖",
+    "It’s giving ‘too cute to say no’ 💅"
+  ];
+  let shyIndex = 0;
+
+  function cycleShyLine(){
+    shyIndex = (shyIndex + 1) % shyLines.length;
+    // only rotate these while she hasn't clicked Yes yet
+    if (reveal.style.display !== "block") {
+      result.textContent = shyLines[shyIndex];
+    }
+  }
+  setInterval(cycleShyLine, 3500);
+
   function moveNo(){
     const x = Math.random()*260;
     const y = Math.random()*30;
     noBtn.style.left = x+"px";
     noBtn.style.top = y+"px";
-    result.textContent = "That button is shy 🙈";
+    result.textContent = shyLines[Math.floor(Math.random()*shyLines.length)];
     spawnHeart(2);
   }
 
   document.addEventListener("mousemove", e=>{
-    const b=noBtn.getBoundingClientRect();
-    const d=Math.hypot(
-      e.clientX-(b.left+b.width/2),
-      e.clientY-(b.top+b.height/2)
+    const b = noBtn.getBoundingClientRect();
+    const d = Math.hypot(
+      e.clientX - (b.left + b.width/2),
+      e.clientY - (b.top + b.height/2)
     );
-    if(d<120) moveNo();
+    if(d < 120) moveNo();
   });
 
-  document.addEventListener("touchstart",moveNo,{passive:true});
-
-  yesBtn.onclick=()=>{
-    result.textContent="YAY!! 💖 Happy Valentine’s Day, my love.";
-    reveal.style.display="block";
-    spawnHeart(20);
-  };
+  document.addEventListener("touchstart", moveNo, {passive:true});
 
   function spawnHeart(n){
     const icons=["💖","💗","💕","💘","❤️"];
@@ -269,14 +288,53 @@
       h.className="floating";
       h.textContent=icons[Math.floor(Math.random()*icons.length)];
       h.style.setProperty("--x",Math.random()*100+"vw");
-      h.style.setProperty("--s",14+Math.random()*20+"px");
-      h.style.setProperty("--d",3+Math.random()*3+"s");
+      h.style.setProperty("--s",(14+Math.random()*20)+"px");
+      h.style.setProperty("--d",(3+Math.random()*3)+"s");
       document.body.appendChild(h);
       setTimeout(()=>h.remove(),6000);
     }
   }
+  setInterval(()=>spawnHeart(1), 900);
 
-  setInterval(()=>spawnHeart(1),900);
+  // 🎶 Music controls
+  const bgm = document.getElementById("bgm");
+  const musicBtn = document.getElementById("musicBtn");
+  let musicOn = false;
+
+  async function toggleMusic(){
+    try{
+      if(!musicOn){
+        await bgm.play();
+        musicOn = true;
+        musicBtn.textContent = "Pause music ⏸️";
+      } else {
+        bgm.pause();
+        musicOn = false;
+        musicBtn.textContent = "Play music 🎶";
+      }
+    } catch (e){
+      // If autoplay is blocked, user can click again
+      musicBtn.textContent = "Tap to play 🎶";
+    }
+  }
+  musicBtn.addEventListener("click", toggleMusic);
+
+  yesBtn.onclick = async () => {
+    result.textContent = "YAY!! 💖 Happy Valentine’s Day, my love.";
+    reveal.style.display = "block";
+    spawnHeart(20);
+
+    // Try to start music on Yes (user interaction usually allows it)
+    if(!musicOn){
+      try{
+        await bgm.play();
+        musicOn = true;
+        musicBtn.textContent = "Pause music ⏸️";
+      } catch(e){
+        // If blocked, button still works
+      }
+    }
+  };
 </script>
 </body>
 </html>
