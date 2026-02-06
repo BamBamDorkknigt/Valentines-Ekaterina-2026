@@ -165,20 +165,34 @@
     @keyframes float{ to{top:-10%;opacity:0} }
 
     /* 🎶 Music button */
-    .music-btn{
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 9999;
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(0,0,0,.08);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-weight: 900;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 12px 28px rgba(0,0,0,.12);
-    }
+    .music-btn {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+
+  width: auto;
+  height: auto;
+  max-height: none;
+
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+
+  cursor: pointer;
+  z-index: 9999;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
     .music-btn:active{ transform: translateY(1px); }
   </style>
 </head>
@@ -338,3 +352,4 @@
 </script>
 </body>
 </html>
+
